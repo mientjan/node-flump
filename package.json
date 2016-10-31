@@ -2,20 +2,20 @@
   "name": "canvas-flump",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/FlumpLibrary.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mientjan/canvas-flump.git"
+    "url": "git+https://github.com/mientjan/node-flump.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mientjan/canvas-flump/issues"
+    "url": "https://github.com/mientjan/node-flump/issues"
   },
-  "homepage": "https://github.com/mientjan/canvas-flump#readme",
+  "homepage": "https://github.com/mientjan/node-flump#readme",
   "devDependencies": {
     "@types/fs-extra": "0.0.34",
     "@types/node-fetch": "^1.6.5",
