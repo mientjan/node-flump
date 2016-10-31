@@ -7,6 +7,7 @@
 
   },
   "include": [
+    "./definitions/index.d.ts",
     "./src/**/*"
   ]
 }

@@ -1,0 +1,23 @@
+{
+  "fileVersion": 0,
+  "exports": [
+    {
+      "maxAtlasSize": 1024,
+      "textureBorder": 1,
+      "format": "JSON",
+      "optimize": "Speed",
+      "scale": 1,
+      "prettyPrint": false,
+      "quality": "best",
+      "name": "default",
+      "combine": false,
+      "scaleFactors": [
+        1
+      ],
+      "description": "'default' (JSON, 100%, @1x)",
+      "scaleFactorsString": "1"
+    }
+  ],
+  "exportDir": "",
+  "importDir": ""
+}

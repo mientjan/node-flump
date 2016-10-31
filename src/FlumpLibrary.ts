@@ -10,6 +10,8 @@ import {ILoadable} from "./core/interface/ILoadable";
 import {Promise} from "./core/util/Promise";
 import * as fetch from "node-fetch";
 import {QueueItem} from "./core/util/QueueItem";
+import * as validUrl from 'valid-url';
+import * as fs from 'fs-extra';
 
 export class FlumpLibrary implements ILoadable<FlumpLibrary>
 {
@@ -38,11 +40,23 @@ export class FlumpLibrary implements ILoadable<FlumpLibrary>
 		} else {
 			flumpLibrary.url = baseDir;
 		}
-		
-		return fetch(url).then(res => res.json()).then((json:ILibrary) =>
+
+		if(validUrl.isUri(url))
 		{
-			return flumpLibrary.processData(json);
-		});
+			return fetch(url).then(res => res.json()).then((json:ILibrary) =>
+			{
+				return flumpLibrary.processData(json);
+			});
+		} else {
+			return new Promise((resolve) => {
+				fs.readJson(url, function (err, json) {
+					flumpLibrary.processData(json).then(result => {
+						resolve(result)
+					});
+				})
+			})
+		}
+
 	}
 
 	public movieData:Array<FlumpMovieData> = [];
@@ -91,8 +105,8 @@ export class FlumpLibrary implements ILoadable<FlumpLibrary>
 			throw new Error('url is not set and there for can not be loaded');
 		}
 
-		return FlumpLibrary.load(this.url, this).catch(() => {
-			throw new Error('could not load library');
+		return FlumpLibrary.load(this.url, this).catch((err) => {
+			throw err;
 		});
 	}
 

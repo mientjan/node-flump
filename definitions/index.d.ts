@@ -1,0 +1,1 @@
+/// <reference path="canvas/canvas.d.ts" />

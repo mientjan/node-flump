@@ -2,13 +2,15 @@ import {IFlumpMovie} from "./IFlumpMovie";
 
 import {ITexture} from "./IFlumpLibrary";
 import {DisplayType} from "../enum/DisplayType";
+import * as Canvas from "canvas";
+
 
 export class FlumpTexture implements IFlumpMovie
 {
 	public type:DisplayType = DisplayType.FLUMPSYMBOL;
 	public name:string;
 	public time:number = 0.0;
-	public renderTexture:HTMLImageElement|HTMLCanvasElement;
+	public renderTexture:Canvas.Image;
 	public originX:number;
 	public originY:number;
 	public x:number;
@@ -16,7 +18,7 @@ export class FlumpTexture implements IFlumpMovie
 	public width:number;
 	public height:number;
 
-	constructor(renderTexture:HTMLImageElement|HTMLCanvasElement, json:ITexture)
+	constructor(renderTexture:Canvas.Image, json:ITexture)
 	{
 		this.name = json.symbol;
 		this.renderTexture = renderTexture;
@@ -34,7 +36,8 @@ export class FlumpTexture implements IFlumpMovie
 
 	public draw(ctx:CanvasRenderingContext2D):boolean
 	{
-		ctx.drawImage(<HTMLImageElement> this.renderTexture, this.x, this.y, this.width, this.height, 0, 0, this.width, this.height);
+		// ctx.drawImage(this.renderTexture, 0, 0, this.width, this.height);
+		ctx.drawImage(this.renderTexture, this.x, this.y, this.width, this.height, 0, 0, this.width, this.height);
 		return true;
 	}
 

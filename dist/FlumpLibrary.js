@@ -5,6 +5,8 @@ var FlumpMovie_1 = require("./flump/FlumpMovie");
 var Promise_1 = require("./core/util/Promise");
 var fetch = require("node-fetch");
 var QueueItem_1 = require("./core/util/QueueItem");
+var validUrl = require('valid-url');
+var fs = require('fs-extra');
 var FlumpLibrary = (function () {
     function FlumpLibrary(basePath) {
         this.movieData = [];
@@ -34,9 +36,20 @@ var FlumpLibrary = (function () {
         else {
             flumpLibrary.url = baseDir;
         }
-        return fetch(url).then(function (res) { return res.json(); }).then(function (json) {
-            return flumpLibrary.processData(json);
-        });
+        if (validUrl.isUri(url)) {
+            return fetch(url).then(function (res) { return res.json(); }).then(function (json) {
+                return flumpLibrary.processData(json);
+            });
+        }
+        else {
+            return new Promise_1.Promise(function (resolve) {
+                fs.readJson(url, function (err, json) {
+                    flumpLibrary.processData(json).then(function (result) {
+                        resolve(result);
+                    });
+                });
+            });
+        }
     };
     FlumpLibrary.prototype.hasLoaded = function () {
         return this._hasLoaded;
@@ -54,8 +67,8 @@ var FlumpLibrary = (function () {
         if (!this.url) {
             throw new Error('url is not set and there for can not be loaded');
         }
-        return FlumpLibrary.load(this.url, this).catch(function () {
-            throw new Error('could not load library');
+        return FlumpLibrary.load(this.url, this).catch(function (err) {
+            throw err;
         });
     };
     FlumpLibrary.prototype.processData = function (json) {

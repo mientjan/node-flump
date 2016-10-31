@@ -326,7 +326,6 @@ export class FlumpMovie extends DisplayObject implements IPlayable
 
 	public draw(ctx:CanvasRenderingContext2D, ignoreCache?:boolean):boolean
 	{
-
 		var layers = this.flumpMovieLayers;
 		var length = layers.length;
 		var ga = ctx.globalAlpha;

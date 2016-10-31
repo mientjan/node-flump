@@ -3,6 +3,8 @@ import {Promise} from '../core/util/Promise';
 import {IAtlas} from "./IFlumpLibrary";
 import {FlumpTexture} from "./FlumpTexture";
 import {IHashMap} from "../core/interface/IHashMap";
+import * as Canvas from "canvas";
+import * as fs from "fs";
 
 export class FlumpTextureGroupAtlas
 {
@@ -12,16 +14,16 @@ export class FlumpTextureGroupAtlas
 		var url = flumpLibrary.url + '/' + file;
 
 		return new Promise(function(resolve, reject){
-			var img = <HTMLImageElement> document.createElement('img');
-			img.onload = () => {
-				resolve(img);
-			};
+			var img = new Canvas.Image;
+			fs.readFile(url, function(err, imageData){
 
-			img.onerror = () => {
-				reject();
-			};
-
-			img.src = url;
+				if(err){
+					reject();
+				} else {
+					img.src = imageData;
+					resolve(img);
+				}
+			});
 		}).then((data:HTMLImageElement) => {
 			return new FlumpTextureGroupAtlas(data, json);
 		});
