@@ -3,3 +3,4 @@ node_modules/
 test/output
 npm-debug.log
 src/**/*.js
+src/**/.DS_Store
