@@ -1,6 +1,3 @@
-
-/// <reference types="node" />
-
 declare module "canvas" {
 
 	export function getContext(type:string):any;

@@ -1,11 +1,14 @@
 var path = require('path');
 var FlumpLibrary = require('../dist/FlumpLibrary').FlumpLibrary;
+var Animator = require('../dist/FlumpLibrary').Animator;
 var fs = require('fs-extra');
 var glob = require('glob');
 var Canvas = require('canvas');
 var spawn = require('child_process').spawn;
 
 var url = path.normalize(__dirname + '/' + './flash/default/parisian_flump_test');
+
+var anim = new Animator(url);
 
 var callbackLoop = function(validator, callback, complete){
 

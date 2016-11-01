@@ -1,5 +1,5 @@
 {
-  "name": "canvas-flump",
+  "name": "node-flump",
   "version": "1.0.0",
   "description": "",
   "main": "dist/FlumpLibrary.js",

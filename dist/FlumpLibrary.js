@@ -15,6 +15,7 @@ var FlumpLibrary = (function () {
         this.isOptimised = false;
         this._hasLoaded = false;
         this._isLoading = false;
+        this._loadingPromise = null;
         if (basePath) {
             this.url = basePath;
         }
@@ -37,7 +38,8 @@ var FlumpLibrary = (function () {
             flumpLibrary.url = baseDir;
         }
         if (validUrl.isUri(url)) {
-            return fetch(url).then(function (res) { return res.json(); }).then(function (json) {
+            var prom = fetch(url);
+            return prom.then(function (res) { return res.json(); }).then(function (json) {
                 return flumpLibrary.processData(json);
             });
         }
@@ -55,21 +57,22 @@ var FlumpLibrary = (function () {
         return this._hasLoaded;
     };
     FlumpLibrary.prototype.isLoading = function () {
-        return this._isLoading;
+        return this._loadingPromise != null;
     };
     FlumpLibrary.prototype.load = function () {
         var _this = this;
-        if (this.hasLoaded()) {
-            return new Promise_1.Promise(function (resolve, reject) {
-                resolve(_this);
-            });
-        }
         if (!this.url) {
             throw new Error('url is not set and there for can not be loaded');
         }
-        return FlumpLibrary.load(this.url, this).catch(function (err) {
-            throw err;
-        });
+        if (!this._loadingPromise) {
+            this._loadingPromise = FlumpLibrary.load(this.url, this).then(function (library) {
+                _this._hasLoaded = true;
+                return library;
+            }).catch(function (err) {
+                throw err;
+            });
+        }
+        return this._loadingPromise;
     };
     FlumpLibrary.prototype.processData = function (json) {
         var _this = this;
@@ -155,3 +158,35 @@ var FlumpLibrary = (function () {
     return FlumpLibrary;
 }());
 exports.FlumpLibrary = FlumpLibrary;
+var Animator = (function () {
+    function Animator(path) {
+        this.library = new FlumpLibrary(path);
+        this.library.load();
+    }
+    Animator.prototype.generate = function (movieClipName, ctx) {
+        return this.library.load().then(function (library) {
+            var movie = library.createMovie(movieClipName);
+            movie.play();
+            var fps = movie.fps;
+            var duration = movie.frames / fps * 1000;
+            var fpms = 1000 / fps;
+            var currentTime = 0;
+            var fn = function () {
+                // console.log(duration, currentTime);
+                if (duration > currentTime) {
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    movie.onTick(fpms);
+                    movie.draw(ctx);
+                    currentTime += fpms;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            };
+            return fn;
+        });
+    };
+    return Animator;
+}());
+exports.Animator = Animator;

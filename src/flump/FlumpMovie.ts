@@ -206,7 +206,7 @@ export class FlumpMovie extends DisplayObject implements IPlayable
 		return this;
 	}
 
-	public onTick(delta:number, accumulated:number):void
+	public  onTick(delta:number, accumulated:number):void
 	{
 		super.onTick(delta, accumulated);
 

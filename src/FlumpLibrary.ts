@@ -1,6 +1,3 @@
-
-
-
 import {FlumpMovieData} from "./flump/FlumpMovieData";
 import {FlumpTextureGroup} from "./flump/FlumpTextureGroup";
 import {FlumpMovie} from "./flump/FlumpMovie";
@@ -43,7 +40,9 @@ export class FlumpLibrary implements ILoadable<FlumpLibrary>
 
 		if(validUrl.isUri(url))
 		{
-			return fetch(url).then(res => res.json()).then((json:ILibrary) =>
+			var prom = <any> fetch(url);
+
+			return <Promise<FlumpLibrary>> prom.then(res => res.json()).then((json:ILibrary) =>
 			{
 				return flumpLibrary.processData(json);
 			});
@@ -72,6 +71,7 @@ export class FlumpLibrary implements ILoadable<FlumpLibrary>
 
 	protected _hasLoaded:boolean = false;
 	protected _isLoading:boolean = false;
+	protected _loadingPromise:Promise<FlumpLibrary> = null;
 
 	constructor(basePath?:string)
 	{
@@ -88,26 +88,27 @@ export class FlumpLibrary implements ILoadable<FlumpLibrary>
 
 	public isLoading():boolean
 	{
-		return this._isLoading;
+		return this._loadingPromise != null;
 	}
 
 	public load():Promise<FlumpLibrary>
 	{
-		if( this.hasLoaded() )
-		{
-			return new Promise<FlumpLibrary>((resolve:Function, reject:Function) => {
-				resolve(this);
-			});
-		}
-
 		if(!this.url)
 		{
 			throw new Error('url is not set and there for can not be loaded');
 		}
 
-		return FlumpLibrary.load(this.url, this).catch((err) => {
-			throw err;
-		});
+		if(!this._loadingPromise)
+		{
+			this._loadingPromise = FlumpLibrary.load(this.url, this).then(library => {
+				this._hasLoaded = true;
+				return library;
+			}).catch((err) => {
+				throw err;
+			});
+		}
+
+		return this._loadingPromise;
 	}
 
 	public processData(json:ILibrary):Promise<FlumpLibrary>
@@ -139,7 +140,7 @@ export class FlumpLibrary implements ILoadable<FlumpLibrary>
 				for(var i = 0; i < textureGroups.length; i++)
 				{
 					var textureGroup = textureGroups[i];
-					this.textureGroups.push(textureGroup); 
+					this.textureGroups.push(textureGroup);
 				}
 
 
@@ -231,3 +232,47 @@ export class FlumpLibrary implements ILoadable<FlumpLibrary>
 	}
 }
 
+export class Animator {
+
+	protected library:FlumpLibrary;
+
+	protected fps:number;
+	protected duration:number;
+
+	constructor(path:string){
+		this.library = new FlumpLibrary(path);
+		this.library.load();
+	}
+
+	public generate(movieClipName:string, ctx:any):Promise<() => boolean>
+	{
+		return this.library.load().then(library => {
+			var movie = library.createMovie(movieClipName);
+			movie.play();
+
+			var fps = movie.fps;
+			var duration = movie.frames / fps * 1000;
+			var fpms = 1000 / fps;
+
+			var currentTime = 0;
+
+			var fn = () => {
+				// console.log(duration, currentTime);
+				if(duration > currentTime)
+				{
+					ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+					movie.onTick(fpms);
+					movie.draw(ctx);
+
+					currentTime += fpms;
+
+					return true;
+				} else {
+					return false;
+				}
+			}
+
+			return fn;
+		});
+	}
+}
