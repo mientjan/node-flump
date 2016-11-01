@@ -1,6 +1,7 @@
 var path = require('path');
 var FlumpLibrary = require('../dist/FlumpLibrary').FlumpLibrary;
 var fs = require('fs-extra');
+var glob = require('glob');
 var Canvas = require('canvas');
 var spawn = require('child_process').spawn;
 
@@ -45,7 +46,6 @@ library.load().then(() => {
 
 			timer += fps;
 			count++;
-			console.log(count);
 
 			return false;
 		}, (cb) => {
@@ -67,7 +67,7 @@ library.load().then(() => {
 
 		}, () => {
 
-			var args = ['-i','output/text%03d.png', 'output.gif'];
+			var args = ['-i',__dirname + '/output/text%03d.png', __dirname + '/output.gif'];
 			// ffmpeg -i %03d.png output.gif
 			const ffmpeg = spawn('ffmpeg', args);
 
@@ -80,9 +80,9 @@ library.load().then(() => {
 			});
 
 			ffmpeg.on('close', (code) => {
-				fs.emptyDir('output', function (err) {
-					if (!err) console.log('success!')
-				})
+				glob(__dirname + "/output/*.png", null, function (er, files) {
+					files.forEach(file => fs.remove(file))
+				});
 			});
 		})
 

@@ -26,6 +26,7 @@
   "dependencies": {
     "@types/fs-extra": "0.0.34",
     "fs-extra": "^0.30.0",
+    "glob": "^7.1.1",
     "node-fetch": "^1.6.3",
     "promise": "^7.1.1",
     "valid-url": "^1.0.9"
