@@ -139,7 +139,7 @@ export class FlumpLibrary implements ILoadable<FlumpLibrary>
 				for(var i = 0; i < textureGroups.length; i++)
 				{
 					var textureGroup = textureGroups[i];
-					this.textureGroups.push(textureGroup);
+					this.textureGroups.push(textureGroup); 
 				}
 
 

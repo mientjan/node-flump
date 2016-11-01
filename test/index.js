@@ -1,6 +1,6 @@
 var path = require('path');
 var FlumpLibrary = require('../dist/FlumpLibrary').FlumpLibrary;
-var fs = require('fs');
+var fs = require('fs-extra');
 var Canvas = require('canvas');
 var spawn = require('child_process').spawn;
 
@@ -61,18 +61,15 @@ library.load().then(() => {
 			});
 
 			stream.on('end', function(){
-				console.log('saved');
 				ctx.clearRect(0, 0, 600, 900);
 				cb();
 			});
 
 		}, () => {
-			console.log('complete');
 
 			var args = ['-i','output/text%03d.png', 'output.gif'];
 			// ffmpeg -i %03d.png output.gif
 			const ffmpeg = spawn('ffmpeg', args);
-			console.log(args.join(' '));
 
 			ffmpeg.stdout.on('data', (data) => {
 				console.log(`stdout: ${data}`);
@@ -83,7 +80,9 @@ library.load().then(() => {
 			});
 
 			ffmpeg.on('close', (code) => {
-
+				fs.emptyDir('output', function (err) {
+					if (!err) console.log('success!')
+				})
 			});
 		})
 
