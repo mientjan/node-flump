@@ -1,10 +1,10 @@
 export class DisplayObject {
-	visible:boolean = true;
-	alpha:number = 1;
-	scaleX:number = 1;
-	scaleY:number = 1;
+	public visible:boolean = true;
+	public alpha:number = 1;
+	public scaleX:number = 1;
+	public scaleY:number = 1;
 
 	constructor(){}
 
-	onTick(delta, accumilated){}
+	public onTick(delta, accumilated){}
 }
