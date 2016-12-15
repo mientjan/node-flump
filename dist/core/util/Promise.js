@@ -181,7 +181,7 @@ var Promise = (function () {
     Promise._setImmediateFn = function (fn) {
         asap = fn;
     };
-    Promise.prototype.catch = function (onRejected) {
+    Promise.prototype["catch"] = function (onRejected) {
         return this.then(null, onRejected);
     };
     Promise.prototype.then = function (onFulfilled, onRejected) {

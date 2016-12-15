@@ -20,7 +20,7 @@
     "@types/fs-extra": "0.0.34",
     "@types/node-fetch": "^1.6.5",
     "@types/valid-url": "^1.0.1",
-    "typescript": "^2.0.6"
+    "typescript": "^2.1.4"
   },
   "dependencies": {
     "@types/fs-extra": "0.0.34",

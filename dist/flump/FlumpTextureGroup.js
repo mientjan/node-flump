@@ -1,6 +1,6 @@
 "use strict";
-var FlumpTextureGroupAtlas_1 = require('./FlumpTextureGroupAtlas');
-var Promise_1 = require('../core/util/Promise');
+var FlumpTextureGroupAtlas_1 = require("./FlumpTextureGroupAtlas");
+var Promise_1 = require("../core/util/Promise");
 var FlumpTextureGroup = (function () {
     function FlumpTextureGroup(flumpTextureGroupAtlases, flumpTextures) {
         this.flumpTextureGroupAtlases = flumpTextureGroupAtlases;
@@ -24,7 +24,7 @@ var FlumpTextureGroup = (function () {
                 }
             }
             return new FlumpTextureGroup(atlases, flumpTextures);
-        }).catch(function (err) {
+        })["catch"](function (err) {
             console.warn('could not load textureGroup', err);
             throw new Error('could not load textureGroup');
         });

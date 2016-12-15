@@ -4,36 +4,37 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var FlumpKeyframeData_1 = require('./FlumpKeyframeData');
-var FlumpTexture_1 = require('./FlumpTexture');
-var FlumpMovie_1 = require('./FlumpMovie');
-var FlumpMtx_1 = require('./FlumpMtx');
-var FlumpLabelData_1 = require('./FlumpLabelData');
+var FlumpKeyframeData_1 = require("./FlumpKeyframeData");
+var FlumpTexture_1 = require("./FlumpTexture");
+var FlumpMovie_1 = require("./FlumpMovie");
+var FlumpMtx_1 = require("./FlumpMtx");
+var FlumpLabelData_1 = require("./FlumpLabelData");
 var DisplayObject_1 = require("../core/DisplayObject");
 var FlumpMovieLayer = (function (_super) {
     __extends(FlumpMovieLayer, _super);
     function FlumpMovieLayer(flumpMove, flumpLayerData) {
-        _super.call(this);
-        this.name = '';
-        this._frame = 0;
-        this._symbols = {};
-        this._symbolName = null;
+        var _this = _super.call(this) || this;
+        _this.name = '';
+        _this._frame = 0;
+        _this._symbols = {};
+        _this._symbolName = null;
         // disable layer from code
-        this.enabled = true;
-        this._storedMtx = new FlumpMtx_1.FlumpMtx(1, 0, 0, 1, 0, 0);
-        this.flumpLayerData = flumpLayerData;
-        this.name = flumpLayerData.name;
+        _this.enabled = true;
+        _this._storedMtx = new FlumpMtx_1.FlumpMtx(1, 0, 0, 1, 0, 0);
+        _this.flumpLayerData = flumpLayerData;
+        _this.name = flumpLayerData.name;
         var flumpLibrary = flumpMove.flumpLibrary;
         for (var i = 0; i < flumpLayerData.flumpKeyframeDatas.length; i++) {
             var keyframe = flumpLayerData.flumpKeyframeDatas[i];
             if (keyframe.label) {
                 flumpMove['_labels'][keyframe.label] = new FlumpLabelData_1.FlumpLabelData(keyframe.label, keyframe.index, keyframe.duration);
             }
-            if ((keyframe.ref != -1 && keyframe.ref != null) && (keyframe.ref in this._symbols) == false) {
-                this._symbols[keyframe.ref] = flumpMove.flumpLibrary.createSymbol(keyframe.ref, false);
+            if ((keyframe.ref != -1 && keyframe.ref != null) && (keyframe.ref in _this._symbols) == false) {
+                _this._symbols[keyframe.ref] = flumpMove.flumpLibrary.createSymbol(keyframe.ref, false);
             }
         }
-        this.setFrame(0);
+        _this.setFrame(0);
+        return _this;
     }
     FlumpMovieLayer.prototype.getSymbol = function (name) {
         var symbols = this._symbols;

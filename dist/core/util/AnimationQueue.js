@@ -9,18 +9,19 @@ var AnimationQueue = (function (_super) {
     __extends(AnimationQueue, _super);
     function AnimationQueue(fps, unit) {
         if (unit === void 0) { unit = 1000; }
-        _super.call(this);
-        this.frame = 0;
+        var _this = _super.call(this) || this;
+        _this.frame = 0;
         /**
          * Will stop
          * @property _freeze
          * @type {boolean}
          */
-        this._freeze = false;
-        this._hasStopped = false;
-        this._time = 0;
-        this._fpms = 0;
-        this._fpms = unit / fps;
+        _this._freeze = false;
+        _this._hasStopped = false;
+        _this._time = 0;
+        _this._fpms = 0;
+        _this._fpms = unit / fps;
+        return _this;
     }
     AnimationQueue.prototype.onTick = function (delta) {
         var time = this._time += delta;

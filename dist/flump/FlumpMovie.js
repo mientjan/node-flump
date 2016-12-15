@@ -4,7 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var FlumpMovieLayer_1 = require('./FlumpMovieLayer');
+var FlumpMovieLayer_1 = require("./FlumpMovieLayer");
 var DisplayObject_1 = require("../core/DisplayObject");
 var AnimationQueue_1 = require("../core/util/AnimationQueue");
 var QueueItem_1 = require("../core/util/QueueItem");
@@ -15,38 +15,39 @@ var FlumpMovie = (function (_super) {
     __extends(FlumpMovie, _super);
     // ToDo: add features like playOnce, playTo, goTo, loop, stop, isPlaying, label events, ...
     function FlumpMovie(flumpLibrary, name) {
-        _super.call(this);
-        this.type = 2048 /* FLUMPSYMBOL */;
-        this._labels = {};
-        this._labelQueue = [];
-        this._label = null;
-        this._queue = null;
-        this.hasFrameCallbacks = false;
-        this.paused = true;
+        var _this = _super.call(this) || this;
+        _this.type = 2048 /* FLUMPSYMBOL */;
+        _this._labels = {};
+        _this._labelQueue = [];
+        _this._label = null;
+        _this._queue = null;
+        _this.hasFrameCallbacks = false;
+        _this.paused = true;
         //public time:number = 0.0;
         //public duration = 0.0;
-        this.frame = 0;
-        this.frames = 0;
-        this.speed = 1;
-        this.fps = 1;
-        this.name = name;
-        this.flumpLibrary = flumpLibrary;
-        this.flumpMovieData = flumpLibrary.getFlumpMovieData(name);
-        var layers = this.flumpMovieData.flumpLayerDatas;
+        _this.frame = 0;
+        _this.frames = 0;
+        _this.speed = 1;
+        _this.fps = 1;
+        _this.name = name;
+        _this.flumpLibrary = flumpLibrary;
+        _this.flumpMovieData = flumpLibrary.getFlumpMovieData(name);
+        var layers = _this.flumpMovieData.flumpLayerDatas;
         var length = layers.length;
         var movieLayers = new Array(length);
         for (var i = 0; i < length; i++) {
             var layerData = layers[i];
-            movieLayers[i] = new FlumpMovieLayer_1.FlumpMovieLayer(this, layerData);
+            movieLayers[i] = new FlumpMovieLayer_1.FlumpMovieLayer(_this, layerData);
         }
-        this.flumpMovieLayers = movieLayers;
-        this.frames = this.flumpMovieData.frames;
-        this._frameCallback = new Array(this.frames);
-        for (var i = 0; i < this.frames; i++) {
-            this._frameCallback[i] = null;
+        _this.flumpMovieLayers = movieLayers;
+        _this.frames = _this.flumpMovieData.frames;
+        _this._frameCallback = new Array(_this.frames);
+        for (var i = 0; i < _this.frames; i++) {
+            _this._frameCallback[i] = null;
         }
-        this.fps = flumpLibrary.frameRate;
-        this.getQueue();
+        _this.fps = flumpLibrary.frameRate;
+        _this.getQueue();
+        return _this;
     }
     FlumpMovie.prototype.getQueue = function () {
         if (!this._queue) {

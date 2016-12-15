@@ -37,7 +37,7 @@ var SignalAbstract_1 = require("./SignalAbstract");
 var Signal2 = (function (_super) {
     __extends(Signal2, _super);
     function Signal2() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     /**
      * Emit the signal, notifying each connected listener.

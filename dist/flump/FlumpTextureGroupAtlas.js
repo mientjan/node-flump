@@ -1,5 +1,5 @@
 "use strict";
-var Promise_1 = require('../core/util/Promise');
+var Promise_1 = require("../core/util/Promise");
 var FlumpTexture_1 = require("./FlumpTexture");
 var Canvas = require("canvas");
 var fs = require("fs");

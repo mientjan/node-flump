@@ -150,7 +150,7 @@ var SignalAbstract = (function () {
             p = p._next;
         }
     };
-    SignalAbstract.DISPATCHING_SENTINEL = new SignalConnection_1.SignalConnection(null, null);
     return SignalAbstract;
 }());
+SignalAbstract.DISPATCHING_SENTINEL = new SignalConnection_1.SignalConnection(null, null);
 exports.SignalAbstract = SignalAbstract;

@@ -5,8 +5,8 @@ var FlumpMovie_1 = require("./flump/FlumpMovie");
 var Promise_1 = require("./core/util/Promise");
 var fetch = require("node-fetch");
 var QueueItem_1 = require("./core/util/QueueItem");
-var validUrl = require('valid-url');
-var fs = require('fs-extra');
+var validUrl = require("valid-url");
+var fs = require("fs-extra");
 var FlumpLibrary = (function () {
     function FlumpLibrary(basePath) {
         this.movieData = [];
@@ -68,7 +68,7 @@ var FlumpLibrary = (function () {
             this._loadingPromise = FlumpLibrary.load(this.url, this).then(function (library) {
                 _this._hasLoaded = true;
                 return library;
-            }).catch(function (err) {
+            })["catch"](function (err) {
                 throw err;
             });
         }
@@ -154,24 +154,39 @@ var FlumpLibrary = (function () {
         }
         return value;
     };
-    FlumpLibrary.EVENT_LOAD = 'load';
     return FlumpLibrary;
 }());
+FlumpLibrary.EVENT_LOAD = 'load';
 exports.FlumpLibrary = FlumpLibrary;
 var Animator = (function () {
     function Animator(path) {
         this.library = new FlumpLibrary(path);
         this.library.load();
     }
-    Animator.prototype.generate = function (movieClipName, ctx) {
+    /**
+     *
+     * @param movieClipName
+     * @param ctx
+     * @param replace
+     * @returns {Promise<FlumpLibrary>}
+     */
+    Animator.prototype.generate = function (_a) {
+        var movieClipName = _a.movieClipName, ctx = _a.ctx, replace = _a.replace;
         return this.library.load().then(function (library) {
             var movie = library.createMovie(movieClipName);
             movie.play();
+            if (replace) {
+                for (var name in replace) {
+                    if (replace.hasOwnProperty(name)) {
+                        movie.replaceSymbol(name, replace[name]);
+                    }
+                }
+            }
             var fps = movie.fps;
             var duration = movie.frames / fps * 1000;
             var fpms = 1000 / fps;
             var currentTime = 0;
-            var fn = function () {
+            var callback = function () {
                 // console.log(duration, currentTime);
                 if (duration > currentTime) {
                     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -184,7 +199,7 @@ var Animator = (function () {
                     return false;
                 }
             };
-            return fn;
+            return callback;
         });
     };
     return Animator;

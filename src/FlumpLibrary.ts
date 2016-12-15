@@ -9,6 +9,7 @@ import * as fetch from "node-fetch";
 import {QueueItem} from "./core/util/QueueItem";
 import * as validUrl from 'valid-url';
 import * as fs from 'fs-extra';
+import {FlumpTexture} from "./flump/FlumpTexture";
 
 export class FlumpLibrary implements ILoadable<FlumpLibrary>
 {
@@ -40,7 +41,7 @@ export class FlumpLibrary implements ILoadable<FlumpLibrary>
 
 		if(validUrl.isUri(url))
 		{
-			var prom = <any> fetch(url);
+			var prom = (<any> fetch)(url);
 
 			return <Promise<FlumpLibrary>> prom.then(res => res.json()).then((json:ILibrary) =>
 			{
@@ -244,11 +245,29 @@ export class Animator {
 		this.library.load();
 	}
 
-	public generate(movieClipName:string, ctx:any):Promise<() => boolean>
+	/**
+	 *
+	 * @param movieClipName
+	 * @param ctx
+	 * @param replace
+	 * @returns {Promise<FlumpLibrary>}
+	 */
+	public generate({movieClipName, ctx, replace}:{movieClipName:string, ctx:any, replace?:{[name:string]:FlumpTexture}}):Promise<() => boolean>
 	{
 		return this.library.load().then(library => {
 			var movie = library.createMovie(movieClipName);
 			movie.play();
+
+			if(replace)
+			{
+				for(var name in replace)
+				{
+					if(replace.hasOwnProperty(name))
+					{
+						movie.replaceSymbol(name, replace[name]);
+					}
+				}
+			}
 
 			var fps = movie.fps;
 			var duration = movie.frames / fps * 1000;
@@ -256,7 +275,7 @@ export class Animator {
 
 			var currentTime = 0;
 
-			var fn = () => {
+			var callback = () => {
 				// console.log(duration, currentTime);
 				if(duration > currentTime)
 				{
@@ -272,7 +291,7 @@ export class Animator {
 				}
 			}
 
-			return fn;
+			return callback;
 		});
 	}
 }
