@@ -1,8 +1,6 @@
 "use strict";
-var Promise_1 = require("../core/util/Promise");
 var FlumpTexture_1 = require("./FlumpTexture");
-var Canvas = require("canvas");
-var fs = require("fs");
+var loadImage_1 = require("../core/util/loadImage");
 var FlumpTextureGroupAtlas = (function () {
     function FlumpTextureGroupAtlas(renderTexture, json) {
         this.flumpTextures = {};
@@ -16,18 +14,7 @@ var FlumpTextureGroupAtlas = (function () {
     FlumpTextureGroupAtlas.load = function (flumpLibrary, json) {
         var file = json.file;
         var url = flumpLibrary.url + '/' + file;
-        return new Promise_1.Promise(function (resolve, reject) {
-            var img = new Canvas.Image;
-            fs.readFile(url, function (err, imageData) {
-                if (err) {
-                    reject();
-                }
-                else {
-                    img.src = imageData;
-                    resolve(img);
-                }
-            });
-        }).then(function (data) {
+        return loadImage_1.loadImage(url).then(function (data) {
             return new FlumpTextureGroupAtlas(data, json);
         });
     };

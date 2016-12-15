@@ -10,6 +10,7 @@ import {QueueItem} from "./core/util/QueueItem";
 import * as validUrl from 'valid-url';
 import * as fs from 'fs-extra';
 import {FlumpTexture} from "./flump/FlumpTexture";
+import {loadImage} from "./core/util/loadImage";
 
 export class FlumpLibrary implements ILoadable<FlumpLibrary>
 {
@@ -234,6 +235,7 @@ export class FlumpLibrary implements ILoadable<FlumpLibrary>
 }
 
 export {FlumpTexture};
+export {loadImage};
 
 export class Animator {
 

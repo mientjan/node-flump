@@ -5,6 +5,7 @@ import {FlumpTexture} from "./FlumpTexture";
 import {IHashMap} from "../core/interface/IHashMap";
 import * as Canvas from "canvas";
 import * as fs from "fs";
+import {loadImage} from "../core/util/loadImage";
 
 export class FlumpTextureGroupAtlas
 {
@@ -13,18 +14,7 @@ export class FlumpTextureGroupAtlas
 		var file = json.file;
 		var url = flumpLibrary.url + '/' + file;
 
-		return new Promise(function(resolve, reject){
-			var img = new Canvas.Image;
-			fs.readFile(url, function(err, imageData){
-
-				if(err){
-					reject();
-				} else {
-					img.src = imageData;
-					resolve(img);
-				}
-			});
-		}).then((data:HTMLImageElement) => {
+		return loadImage(url).then((data:Canvas.Image) => {
 			return new FlumpTextureGroupAtlas(data, json);
 		});
 	}

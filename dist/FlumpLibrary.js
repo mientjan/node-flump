@@ -9,6 +9,8 @@ var validUrl = require("valid-url");
 var fs = require("fs-extra");
 var FlumpTexture_1 = require("./flump/FlumpTexture");
 exports.FlumpTexture = FlumpTexture_1.FlumpTexture;
+var loadImage_1 = require("./core/util/loadImage");
+exports.loadImage = loadImage_1.loadImage;
 var FlumpLibrary = (function () {
     function FlumpLibrary(basePath) {
         this.movieData = [];

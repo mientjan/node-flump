@@ -6,6 +6,7 @@ import { ILibrary } from "./flump/IFlumpLibrary";
 import { ILoadable } from "./core/interface/ILoadable";
 import { Promise } from "./core/util/Promise";
 import { FlumpTexture } from "./flump/FlumpTexture";
+import { loadImage } from "./core/util/loadImage";
 export declare class FlumpLibrary implements ILoadable<FlumpLibrary> {
     static EVENT_LOAD: string;
     static load(url: string, flumpLibrary?: FlumpLibrary): Promise<FlumpLibrary>;
@@ -31,6 +32,7 @@ export declare class FlumpLibrary implements ILoadable<FlumpLibrary> {
     getNameFromReferenceList(value: string | number): string;
 }
 export { FlumpTexture };
+export { loadImage };
 export declare class Animator {
     protected library: FlumpLibrary;
     protected fps: number;
