@@ -7,6 +7,8 @@ var fetch = require("node-fetch");
 var QueueItem_1 = require("./core/util/QueueItem");
 var validUrl = require("valid-url");
 var fs = require("fs-extra");
+var FlumpTexture_1 = require("./flump/FlumpTexture");
+exports.FlumpTexture = FlumpTexture_1.FlumpTexture;
 var FlumpLibrary = (function () {
     function FlumpLibrary(basePath) {
         this.movieData = [];

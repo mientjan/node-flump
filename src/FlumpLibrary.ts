@@ -233,6 +233,8 @@ export class FlumpLibrary implements ILoadable<FlumpLibrary>
 	}
 }
 
+export {FlumpTexture};
+
 export class Animator {
 
 	protected library:FlumpLibrary;

@@ -1,5 +1,4 @@
 declare module "canvas" {
-
 	export function getContext(type:string):any;
 	export var Context2d:any;
 	export var PNGStream:any;

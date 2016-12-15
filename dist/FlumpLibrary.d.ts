@@ -30,6 +30,7 @@ export declare class FlumpLibrary implements ILoadable<FlumpLibrary> {
     createMovie(id: any): FlumpMovie;
     getNameFromReferenceList(value: string | number): string;
 }
+export { FlumpTexture };
 export declare class Animator {
     protected library: FlumpLibrary;
     protected fps: number;
